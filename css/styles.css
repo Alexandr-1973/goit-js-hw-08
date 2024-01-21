@@ -1,16 +1,36 @@
+body {
+  padding: 0;
+}
+
 .gallery {
   display: flex;
   justify-content: center;
   align-items: center;
   flex-wrap: wrap;
-  gap: 24px;
-  padding: 24px 156px;
+  column-gap: 24px;
+  row-gap: 24px;
+  padding-top: 24px;
+  padding-bottom: 24px;
   list-style-type: none;
   width: 1440px;
+  margin: 0;
 }
 
 .gallery-image {
-  width: 360px;
-  height: 200px;
-  flex-shrink: 0;
+  max-width: 360px;
+  cursor: pointer;
+}
+
+.modal {
+  cursor: pointer;
+  width: 1440px;
+  background-color: rgba(46, 47, 66, 0.8);
+  padding: 28px 164px;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.modal-img {
+  width: 1112px;
 }

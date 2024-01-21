@@ -64,11 +64,11 @@ const images = [
   },
 ];
 
-let markup = '';
-for (const image of images) {
-  const { preview, original, description } = image;
-
-  markup += `<li class="gallery-item">
+const markup = images
+  .map((image, idx) => {
+    image.id = idx + 1;
+    const { preview, original, description, id } = image;
+    return `<li class="gallery-item" data-id="${id}">
       <a class="gallery-link" href=${original}>
         <img
           class="gallery-image"
@@ -78,10 +78,47 @@ for (const image of images) {
         />
       </a>
     </li>`;
-}
+  })
+  .join('');
+
 document.querySelector('.gallery').innerHTML = markup;
 
-document.querySelector('ul.gallery').addEventListener('click', (event) => {
-    event.preventDefault();
-  console.log(event.target.dataset.source);
+document.querySelector('ul.gallery').addEventListener('click', event => {
+  event.preventDefault();
+
+  const imgNumber = +event.target.closest('li').dataset.id;
+
+  const needImg = images.find(image => image.id === imgNumber);
+
+  const { original, description } = needImg;
+
+  const instance = basicLightbox.create(
+    `<div class="modal my-modal"><img class="modal-img" src=${original} alt=${description}/></div>`,
+    {
+      closable: true,
+
+      className: '',
+
+      onShow: instance => {
+        document.addEventListener('keydown', onModalClose);
+      },
+
+      onClose: instance => {
+        document.removeEventListener('keydown', onModalClose);
+      },
+    }
+  );
+
+  instance.show();
+
+  document.querySelector('.modal').addEventListener('click', event => {
+    instance.close();
+  });
+
+  function onModalClose(event) {
+    if (event.code === 'Escape') {
+      instance.close();
+    }
+  }
+
 });
